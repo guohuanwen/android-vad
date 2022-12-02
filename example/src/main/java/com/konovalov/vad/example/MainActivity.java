@@ -15,7 +15,9 @@ import com.konovalov.vad.Vad;
 import com.konovalov.vad.VadConfig;
 import com.konovalov.vad.example.recorder.VoiceRecorder;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -33,16 +35,22 @@ public class MainActivity extends AppCompatActivity implements VoiceRecorder.Lis
     private final String SPINNER_SAMPLE_RATE_TAG = "sample_rate";
     private final String SPINNER_FRAME_SIZE_TAG = "frame_size";
     private final String SPINNER_MODE_TAG = "mode";
+    private final String SPINNER_VOICE_TAG = "voice";
+    private final String SPINNER_NOISE_TAG = "noise";
 
     private FloatingActionButton recordingActionButton;
     private TextView speechTextView;
     private Spinner sampleRateSpinner;
     private Spinner frameSpinner;
     private Spinner modeSpinner;
+    private Spinner voiceSpinner;
+    private Spinner noiseSpinner;
 
     private ArrayAdapter sampleRateAdapter;
     private ArrayAdapter frameAdapter;
     private ArrayAdapter modeAdapter;
+    private ArrayAdapter voiceAdapter;
+    private ArrayAdapter noiseAdapter;
 
     private VoiceRecorder recorder;
     private VadConfig config;
@@ -85,6 +93,40 @@ public class MainActivity extends AppCompatActivity implements VoiceRecorder.Lis
         modeSpinner.setTag(SPINNER_MODE_TAG);
         modeSpinner.setSelection(getModes().indexOf(DEFAULT_MODE.name()), false);
         modeSpinner.setOnItemSelectedListener(this);
+
+        List<Integer> voiceValues = new ArrayList<>();
+        voiceValues.add(100);
+        voiceValues.add(200);
+        voiceValues.add(300);
+        voiceValues.add(400);
+        voiceValues.add(500);
+        voiceValues.add(600);
+        voiceValues.add(700);
+        voiceValues.add(800);
+        voiceValues.add(900);
+        voiceValues.add(1000);
+        voiceSpinner = findViewById(R.id.voiceSpinner);
+        voiceAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, voiceValues);
+        voiceSpinner.setAdapter(voiceAdapter);
+        voiceSpinner.setTag(SPINNER_VOICE_TAG);
+        voiceSpinner.setOnItemSelectedListener(this);
+
+        List<Integer> noiseValues = new ArrayList<>();
+        noiseValues.add(100);
+        noiseValues.add(200);
+        noiseValues.add(300);
+        noiseValues.add(400);
+        noiseValues.add(500);
+        noiseValues.add(600);
+        noiseValues.add(700);
+        noiseValues.add(800);
+        noiseValues.add(900);
+        noiseValues.add(1000);
+        noiseSpinner = findViewById(R.id.noiseSpinner);
+        noiseAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, noiseValues);
+        noiseSpinner.setAdapter(noiseAdapter);
+        noiseSpinner.setTag(SPINNER_NOISE_TAG);
+        noiseSpinner.setOnItemSelectedListener(this);
 
         recordingActionButton = findViewById(R.id.recordingActionButton);
         recordingActionButton.setOnClickListener(this);
@@ -154,6 +196,12 @@ public class MainActivity extends AppCompatActivity implements VoiceRecorder.Lis
                 break;
             case SPINNER_MODE_TAG:
                 config.setMode(VadConfig.Mode.valueOf(String.valueOf(modeAdapter.getItem(position))));
+                break;
+            case SPINNER_VOICE_TAG:
+                config.setVoiceDurationMillis((Integer) voiceAdapter.getItem(position));
+                break;
+            case SPINNER_NOISE_TAG:
+                config.setSilenceDurationMillis((Integer) noiseAdapter.getItem(position));
                 break;
         }
 

@@ -8,4 +8,6 @@
     <string name="sample_rate">Sample Rate:</string>
     <string name="frame_size">Frame Size:</string>
     <string name="mode">Mode:</string>
+    <string name="voice_time">VoiceTime:</string>
+    <string name="noise_time">NoiseTime:</string>
 </resources>
